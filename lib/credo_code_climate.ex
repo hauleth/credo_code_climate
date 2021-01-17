@@ -44,7 +44,7 @@ defmodule CredoCodeClimate do
         location: %{
           path: path,
           lines: %{
-            start: line
+            begin: line
           }
         }
       }
