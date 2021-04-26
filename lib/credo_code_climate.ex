@@ -15,6 +15,7 @@ defmodule CredoCodeClimate do
 
     defp do_run(exec) do
       path = Execution.get_plugin_param(exec, CredoCodeClimate, :path) || "codeclimate.json"
+
       content =
         exec
         |> Execution.get_issues()
@@ -26,12 +27,14 @@ defmodule CredoCodeClimate do
       exec
     end
 
-    defp format(%{
-      priority: priority,
-      filename: path,
-      line_no: line,
-      message: description
-    } = entry) do
+    defp format(
+           %{
+             priority: priority,
+             filename: path,
+             line_no: line,
+             message: description
+           } = entry
+         ) do
       fingerprint =
         entry
         |> :erlang.term_to_binary()
@@ -59,7 +62,5 @@ defmodule CredoCodeClimate do
     defp hash(bin), do: :crypto.hash(:sha256, bin) |> Base.encode16(case: :lower)
   end
 
-  def init(exec) do
-    append_task(exec, :run_command, Generate)
-  end
+  def init(exec), do: append_task(exec, :run_command, Generate)
 end
